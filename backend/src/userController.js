@@ -1,5 +1,5 @@
 // controllers/userController.js
-const User = require('../models/userModel');
+const User = require('./userModel');
 
 // Controller to fetch all users
 const getUsers = async (req, res) => {

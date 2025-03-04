@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ethers } = require("ethers");
 require("dotenv").config();
+const userRoutes = require('./src/userRoutes');
+const { getUsers, getUserById } = require('./src/userController');
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -22,13 +25,20 @@ app.use(bodyParser.json()); // Add body parser middleware
 app.use(express.json()); // Add express json middleware
 
 // MongoDB connection
-mongoose
-mongoose
-  .connect('mongodb://localhost:27017/userDB')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
 
 
+const uri = 'mongodb+srv://admin:1234@cluster0.9y4p74j.mongodb.net/DatabaseBlockchain';
+
+
+mongoose.connect(uri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  });
+
+  app.get('/user', getUsers);
 // Routes
 /*
 app.get("/status", async(req, res) => {

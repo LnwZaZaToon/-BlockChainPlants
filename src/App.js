@@ -9,6 +9,7 @@ const useAuth = () => {
   return useContext(AuthContext);
 };
 
+
 // Mock user data
 const mockUser = {
   username: "JohnDoe",
