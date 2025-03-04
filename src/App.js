@@ -1,76 +1,116 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, createContext, useContext } from "react";
+import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 
+// Simulating a simple authentication context
+const AuthContext = createContext();
 
-const App = () => {
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [newMessage, setNewMessage] = useState("");
+// Custom hook to use auth context
+const useAuth = () => {
+  return useContext(AuthContext);
+};
 
-  const BASE_URL = "http://localhost:4000"; 
+// Mock user data
+const mockUser = {
+  username: "JohnDoe",
+  role: "user", // change to "admin" for admin role
+};
 
-const getStatus = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/status`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching status:", error);
-      throw error;
-    }
-  };
-  
-  const updateMessage = async (newMessage) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/update`, { newMessage });
-      return response.data;
-    } catch (error) {
-      console.error("Error updating message:", error);
-      throw error;
-    }
-  };
+// AuthProvider to manage authentication state
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    const fetchMessage = async () => {
-      try {
-        const data = await getStatus();
-        setCurrentMessage(data.data.message);
-      } catch (error) {
-        console.error("Failed to fetch message", error);
-      }
-    };
-
-    fetchMessage();
+    // Simulate fetching the user (from local storage, API, etc.)
+    setUser(mockUser);
   }, []);
 
-  // Handle form submission to update the message
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const result = await updateMessage(newMessage);
-      alert(`Transaction successful: ${result.txHash}`);
-      setCurrentMessage(newMessage); // Update the frontend with the new message
-      setNewMessage(""); // Clear the input field
-    } catch (error) {
-      console.error("Failed to update message", error);
-    }
-  };
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Home Page Component
+const Home = () => {
+  const { user } = useAuth();
+  return (
+    <div>
+      <h1>Welcome to the Home Page</h1>
+      <h2>{user ? `Logged in as ${user.username}` : "Not logged in"}</h2>
+      <nav>
+        <ul>
+          <li><Link to="/user-page">User Page</Link></li>
+          <li><Link to="/admin-page">Admin Page</Link></li>
+        </ul>
+      </nav>
+    </div>
+  );
+};
+
+// User Page Component (only for regular users)
+const UserPage = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <div>You must log in to access this page.</div>;
+  }
 
   return (
     <div>
-      <h1>Ethereum Smart Contract Interaction</h1>
-      <div>
-        <h2>Current Message: {currentMessage}</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            New Message:
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-            />
-          </label>
-          <button type="submit">Update Message</button>
-        </form>
-      </div>
+      <h1>User Page</h1>
+      <h2>Welcome, {user.username}! This is the user-granted page.</h2>
     </div>
+  );
+};
+
+// Admin Page Component (only for admins)
+const AdminPage = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <div>You must log in to access this page.</div>;
+  }
+
+  if (user.role !== "admin") {
+    return <div>You do not have permission to access this page.</div>;
+  }
+
+  return (
+    <div>
+      <h1>Admin Page</h1>
+      <h2>Welcome, Admin! This is the admin-granted page.</h2>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="app-wrapper">
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/user-page">User Page</Link>
+              </li>
+              <li>
+                <Link to="/admin-page">Admin Page</Link>
+              </li>
+            </ul>
+          </nav>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/user-page" element={<UserPage />} />
+            <Route path="/admin-page" element={<AdminPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
