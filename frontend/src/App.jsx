@@ -9,8 +9,7 @@ import Navbar from './Components/Navbar/Navbar';
 import MyOrders from './Pages/MyOrders/MyOrders';
 import PlaceOrder from './Pages/PlaceOrder/PlaceOrder';
 import LoginPopup from './Components/LoginPopup/LoginPopup';
-import Mechanical from './Components/Mechanical/Mechanical';
-import Electrical from './Components/Electrical/Electrical';
+import Quests from './Components/Quests/Quests';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,8 +28,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />}/>
           <Route path='/order' element={<PlaceOrder />}/>
           <Route path='/myorders' element={<MyOrders />}/>
-          <Route path='/mechanical' element={<Mechanical category= 'Mechanical'/>}/>
-          <Route path='/electrical' element={<Electrical category= 'Electrical'/>}/>
+          <Route path='/quests' element={<Quests category= 'Mechanical'/>}/>
           <Route path='/verify' element={<Verify />}/>
         </Routes>
       </div>

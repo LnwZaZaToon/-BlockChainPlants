@@ -12,7 +12,7 @@ const PartsDisplay = ({category}) => {
 
   return (
     <div className='parts-display' id='parts-display'>
-      <h2>Last Product Add</h2>
+      <h2>Quest Avaliable</h2>
       <div className='parts-display-list'>
         {lastFourItems.map((item)=>{
           if (category==="All" || category===item.category) {

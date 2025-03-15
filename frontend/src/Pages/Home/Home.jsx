@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <>
       <Header/>
-      <PartsDisplay category={category}/>
+     {/* <PartsDisplay category={category}/> */}
     </>
   )
 }
