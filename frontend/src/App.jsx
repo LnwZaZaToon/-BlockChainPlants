@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import Cart from './Pages/Cart/Cart';
+
 import Verify from './Pages/Verify/Verify';
 import Footer from './Components/Footer/Footer';
 import Navbar from './Components/Navbar/Navbar';

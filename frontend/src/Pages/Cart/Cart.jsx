@@ -2,43 +2,54 @@ import React, { useContext, useState } from 'react';
 import { StoreContext } from '../../Context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import axios from 'axios';
 import './Cart.css';
 
 const Cart = () => {
-  const { cartItems, parts_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+  const { cartItems, parts_list, removeFromCart, getTotalCartAmount, url, token } = useContext(StoreContext);
   const navigate = useNavigate();
-  const [promoCode, setPromoCode] = useState('');
-  const [isPromoCodeValid, setIsPromoCodeValid] = useState(true);
-  const [discountApplied, setDiscountApplied] = useState(false);
 
   const handleRemoveFromCart = (itemId) => {
     removeFromCart(itemId);
-    toast.success("Item has been removed from the cart."); // Display success message when item is removed
+    toast.success("Item has been removed from the cart.");
   };
 
-  const applyPromoCode = () => {
-    if (promoCode === 'SathiTInwza007soCuTe') {
-      setIsPromoCodeValid(true);
-      setDiscountApplied(true);
-      updatePromoCodeValidity(true);
-      toast.success("Promo code applied successfully! You get a 99% discount.");
-      
-    } else {
-      setIsPromoCodeValid(false);
-      setDiscountApplied(false);
-      updatePromoCodeValidity(false);
-      toast.error("Invalid promo code. Please try again.");
+  const placeOrder = async () => {
+    if (!token) {
+      toast.error("Please sign in to place an order");
+      navigate('/cart');
+      return;
     }
-  };
-
-  const discountedTotal = () => {
-    const totalAmount = getTotalCartAmount() + 0.75;
-    if (discountApplied) {
-      toast.success("Promo code applied successfully! You get a 99% discount.");
-      return totalAmount * 0.01;
-    } else {
-      return totalAmount;
+    
+    if (getTotalCartAmount() === 0) {
+      toast.error("Your cart is empty");
+      navigate('/cart');
+      return;
+    }
+    
+    let orderItems = parts_list.map((item) => {
+      if (cartItems[item._id] > 0) {
+        return { ...item, quantity: cartItems[item._id] };
+      }
+      return null;
+    }).filter(Boolean);
+    
+    let orderData = {
+      items: orderItems,
+      amount: getTotalCartAmount() + 0.75,
+    };
+    
+    try {
+      let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+      if (response.data.success) {
+        const { session_url } = response.data;
+        window.location.replace(session_url);
+      } else {
+        toast.success("Order placed successfully. Delivery on the way!");
+      }
+    } catch (error) {
+      toast.error("Failed to place order. Please try again.");
+      console.error("Order Error:", error);
     }
   };
 
@@ -71,28 +82,12 @@ const Cart = () => {
       </div>
       <div className="cart-bottom">
         <div className="cart-total">
-          <h2>Cart Totals</h2>
-          <div>
-            <div className="cart-total-details"><p>Subtotal</p><p>${getTotalCartAmount()}</p></div>
-            <hr />
-            <div className="cart-total-details"><p>Delivery Fee</p><p>${getTotalCartAmount() === 0 ? 0 : 1.75}</p></div>
-            <hr />
-            <div className="cart-total-details"><b>Total</b><b>${discountedTotal()}</b></div>
-          </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
-        </div>
-        <div className="cart-promocode">
-          <div>
-            <p>If you have a promo code, Enter it here</p>
-            <div className='cart-promocode-input'>
-              <input type="text" placeholder='promo code' value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
-              <button onClick={applyPromoCode}>Submit</button>
-            </div>
-          </div>
+          <h2>Your Quest's ready to go</h2>
+          <button onClick={placeOrder}>PROCEED TO CHECKOUT</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Cart;
