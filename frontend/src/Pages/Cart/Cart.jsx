@@ -16,42 +16,45 @@ const Cart = () => {
 
   const placeOrder = async () => {
     if (!token) {
-      toast.error("Please sign in to place an order");
-      navigate('/cart');
-      return;
+        toast.error("Please sign in to start a quest.");
+        navigate('/cart');
+        return;
     }
     
     if (getTotalCartAmount() === 0) {
-      toast.error("Your cart is empty");
-      navigate('/cart');
-      return;
+        toast.error("Your quest bag is empty.");
+        navigate('/cart');
+        return;
     }
-    
+
     let orderItems = parts_list.map((item) => {
-      if (cartItems[item._id] > 0) {
-        return { ...item, quantity: cartItems[item._id] };
-      }
-      return null;
+        if (cartItems[item._id] > 0) {
+            return { ...item, quantity: cartItems[item._id] };
+        }
+        return null;
     }).filter(Boolean);
-    
+
     let orderData = {
-      items: orderItems,
-      amount: getTotalCartAmount() + 0.75,
+        userId: token, // Assuming token contains user ID
+        items: orderItems,
+        amount: getTotalCartAmount() + 0.75,
     };
-    
+
     try {
-      let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-      if (response.data.success) {
-        const { session_url } = response.data;
-        window.location.replace(session_url);
-      } else {
-        toast.success("Order placed successfully. Delivery on the way!");
-      }
+        let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+
+        if (response.data.success) {
+            toast.success("Quest started! Complete it before taking another.");
+            window.location.replace(response.data.session_url);
+        } else {
+            toast.error(response.data.message);
+        }
     } catch (error) {
-      toast.error("Failed to place order. Please try again.");
-      console.error("Order Error:", error);
+        toast.error("Failed to start quest. Try again.");
+        console.error("Order Error:", error);
     }
-  };
+};
+
 
   return (
     <div className='cart'>

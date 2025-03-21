@@ -2,56 +2,36 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from "stripe";
 
+
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Placing User Order for Frontend
 const placeOrder = async (req, res) => {
-
     try {
+        const { userId, items, amount } = req.body;
+
+        // Check if the user already has an active quest (order)
+        const existingOrder = await orderModel.findOne({ userId, status: "Pending" });
+
+        if (existingOrder) {
+            return res.json({ success: false, message: "You already have an active quest. Complete it before starting a new one." });
+        }
+
+        // If no active quest, create a new one
         const newOrder = new orderModel({
-            userId: req.body.userId,
-            items: req.body.items,
-            amount: req.body.amount,
-            address: req.body.address,
-        })
+            userId,
+            items,
+            amount,
+            status: "Pending" // Mark as pending until verified
+        });
+
         await newOrder.save();
-        await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
-
-        const line_items = req.body.items.map((item) => ({
-            price_data: {
-              currency: "USD",
-              product_data: {
-                name: item.name
-              },
-              unit_amount: item.price*100
-            },
-            quantity: item.quantity
-          }))
-
-        line_items.push({
-            price_data:{
-                currency:"USD",
-                product_data:{
-                    name:"Delivery Charge"
-                },
-                unit_amount: 0.75*100
-            },
-            quantity:1
-        })
-        
-          const session = await stripe.checkout.sessions.create({
-            success_url: `http://localhost:5173/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url: `http://localhost:5173/verify?success=false&orderId=${newOrder._id}`,
-            line_items: line_items,
-            mode: 'payment',
-          });
-      
-          res.json({success:true,session_url:session.url});
-
+        res.json({ success: true, message: "Quest started successfully!" });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
+        console.error("Order Error:", error);
+        res.json({ success: false, message: "Error starting quest" });
     }
-}
+};
 
 // Listing Order for Admin panel
 const listOrders = async (req, res) => {
@@ -103,4 +83,28 @@ const verifyOrder = async (req, res) => {
 
 }
 
-export { placeOrder, listOrders, userOrders, updateStatus ,verifyOrder }
+const uploadImages = async (req, res) => {
+    try {
+        console.log("Received body:", req.body);  // Log the body to check orderId and other params
+        console.log("Received file:", req.file); 
+        const { orderId } = req.body;
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No image uploaded." });
+        }
+
+        const imageUrl = "/uploads/" + req.file.filename;
+
+        await orderModel.findByIdAndUpdate(orderId, { image: imageUrl });
+
+        res.json({ success: true, message: "Image uploaded successfully!" });
+    } catch (error) {
+        console.error("Image Upload Error:", error);
+        res.status(500).json({ success: false, message: "Error uploading image." });
+    }
+};
+
+
+
+
+
+export { placeOrder, listOrders, userOrders, updateStatus ,verifyOrder,uploadImages }

@@ -24,6 +24,35 @@ const MyOrders = () => {
     }
   }, [token]);
 
+  // Handle Image Upload
+  const handleImageUpload = async (event, orderId) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("orderId", orderId);
+
+    try {
+      const response = await axios.post(url + "/api/order/addimages", formData, {
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          token 
+        }
+      });
+
+      if (response.data.success) {
+        alert("Image uploaded successfully!");
+        fetchOrders(); // Refresh orders after upload
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image.");
+    }
+  };
+
   return (
     <div className='my-orders'>
       <h2>My Orders</h2>
@@ -45,7 +74,20 @@ const MyOrders = () => {
                   {order.status === "pending" ? "Waiting for Admin Verification" : order.status}
                 </b>
               </p>
-              <button>Track Order</button>
+
+              {/* Hidden file input for image upload */}
+              <input 
+                type="file" 
+                accept="image/*" 
+                style={{ display: "none" }} 
+                id={`upload-${order._id}`} 
+                onChange={(event) => handleImageUpload(event, order._id)}
+              />
+              
+              {/* Button to trigger file selection */}
+              <button onClick={() => document.getElementById(`upload-${order._id}`).click()}>
+                Upload Image
+              </button>
             </div>
           ))
         )}
