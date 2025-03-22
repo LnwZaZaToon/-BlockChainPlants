@@ -12,7 +12,8 @@ console.log(process.env.ALCHEMY_API_KEY);
 console.log(process.env.PRIVATE_KEY);
 
 // Correct provider initialization using ethers.providers.JsonRpcProvider
-const provider = ethers.getDefaultProvider('sepolia');
+//const provider = ethers.getDefaultProvider('sepolia');
+const provider = new ethers.providers.JsonRpcProvider(process.env.ALCHEMY_API_KEY);
 
 // Your contract address
 const contractAddress = "0xbA82e4CB199791368a14E67C37a0B94E28d6077c"; 
@@ -57,6 +58,9 @@ const getBalance = async (req, res) => {
     }
 
     try {
+        console.log("Contract Address:", contract.address);
+        console.log("Contract ABI:", contract.interface.fragments);
+
         // Check if userAddress is an ENS name and resolve it
         let resolvedAddress = userAddress;
         if (userAddress.includes('.eth')) {
@@ -65,7 +69,7 @@ const getBalance = async (req, res) => {
                 return res.status(400).json({ error: "Invalid ENS name" });
             }
         }
-
+        await new Promise(res => setTimeout(res, 300));
         // Now call getBalance with the resolved or original address
         const balance = await contract.getBalance(resolvedAddress);
         res.status(200).json({ balance: ethers.utils.formatEther(balance) });
