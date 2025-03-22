@@ -78,4 +78,34 @@ const getData = async(req , res) =>{
       }
 }
 
-export {loginUser, registerUser,getData}
+
+
+const addmetamask = async (req, res) => {
+    try {
+        const { userId, metaMaskAccount } = req.body;
+        console.log(userId)
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is missing from the token" });
+        }
+        const user2 = await userModel.findById(userId);
+        // Now update the user by their ObjectId
+        const user = await userModel.findByIdAndUpdate(
+            userId,  // userId is now a string from JWT payload
+            { metaMaskAccount },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "MetaMask account saved", user });
+
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+
+export {loginUser, registerUser,getData,addmetamask}

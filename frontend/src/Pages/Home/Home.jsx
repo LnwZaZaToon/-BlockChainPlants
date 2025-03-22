@@ -5,6 +5,7 @@ import PartsDisplay from '../../Components/PartsDisplay/PartsDisplay';
 const Home = () => {
 
   const [category,setCategory] = useState("All")
+  
 
   return (
     <>

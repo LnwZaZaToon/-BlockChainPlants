@@ -9,7 +9,7 @@ import './Navbar.css';
 const Navbar = ({ setShowLogin }) => {
 
   const [menu, setMenu] = useState("home");
-  const { getTotalCartAmount, token ,setToken } = useContext(StoreContext);
+  const { getTotalCartAmount, token ,setToken,metaMaskAccount, connectMetaMask } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -27,6 +27,14 @@ const Navbar = ({ setShowLogin }) => {
         <Link to="/quests" onClick={() => setMenu("Mechanical")} className={`${menu === "Mechanical" ? "active" : ""}`}>Quests</Link>
       </ul>
       <div className="navbar-right">
+      <div>
+            <button onClick={connectMetaMask}>Connect MetaMask</button>
+            {metaMaskAccount ? (
+                <p>Connected MetaMask Account: {metaMaskAccount}</p>
+            ) : (
+                <p>No MetaMask account connected</p>
+            )}
+        </div>
         <Link to='/cart' className='navbar-search-icon'>
           <img src={assets.basket_icon} alt="" />
           <div className={getTotalCartAmount() > 0 ? "dot" : ""}></div>
