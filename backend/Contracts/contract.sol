@@ -5,7 +5,7 @@ contract QuestReward {
     address public owner;
     mapping(address => uint256) public userCoins;
 
-    event QuestCompleted(address indexed user, uint256 amount);
+    event QuestCompleted(address indexed user, uint256 reward);
 
     // Constructor to set the contract owner
     constructor() {
@@ -18,9 +18,14 @@ contract QuestReward {
         _;
     }
 
-    // Function to complete a quest and reward a user
-    function completeQuest(address user, uint256 reward) external onlyOwner {
+    // Function to complete a quest and reward a user with Ether
+    function completeQuest(address user) external onlyOwner {
+        uint256 reward = 1 ether; // Reward in Ether (can change as needed)
         userCoins[user] += reward;
+
+        // Send Ether to the user
+        payable(user).transfer(reward);
+
         emit QuestCompleted(user, reward);
     }
 
@@ -28,4 +33,7 @@ contract QuestReward {
     function getBalance(address user) external view returns (uint256) {
         return userCoins[user];
     }
+
+    // Function to receive Ether to fund the contract
+    receive() external payable {}
 }
