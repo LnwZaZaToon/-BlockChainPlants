@@ -45,10 +45,6 @@ const Quests = () => {
                   amount={item.amount} 
                   id={item._id} 
                 />
-
-                <button  className='btn flex' onClick={() => handleSelectQuest(item)} disabled={!!selectedQuest && token} >
-                  {!token ? 'Login to Select' : selectedQuest ? 'Quest Already Selected' : 'Select Quest'}
-                </button>
               </div>
             );
           }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { assets, url } from '../../assets/assets';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Modal from './modal'; 
 
 import './Orders.css';
 
@@ -10,6 +11,8 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
   const [publicKey , setPublicKey]= useState(null);
   const [Isverified , setIsverified] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null); // State to track the selected order
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
 
   const fetchAllOrders = async () => {
     const response = await axios.get(`${url}/api/order/list`)
@@ -71,6 +74,15 @@ const Order = () => {
     console.error("Transaction error:", error);
   }
 };
+const handleOrderClick = (order) => {
+  setSelectedOrder(order);
+  setIsModalOpen(true); // Open the modal when an order is clicked
+};
+
+const closeModal = () => {
+  setIsModalOpen(false); // Close the modal
+  setSelectedOrder(null); // Clear the selected order
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +97,7 @@ const Order = () => {
       <h3>Order Page</h3>
       <div className="order-list">
         {orders.map((order, index) => (
-          <div key={index} className='order-item'>
+          <div key={index} className='order-item' >
             <img src={assets.parcel_icon} alt="" />
             <div>
               <p className='order-item-parts'>
@@ -107,13 +119,15 @@ const Order = () => {
             </div>
             <p>Items : {order.items.length}</p>
             <p>${order.amount}</p>
-            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id=""   >
+            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id=""  disabled={order.status === "Product Processing"} >
               <option value="verified">not verified</option>
               <option value="Product Processing">verified </option>
             </select>
+            <button className='btnOrder' onClick={() => handleOrderClick(order)}>description</button>
           </div>
         ))}
       </div>
+      <Modal show={isModalOpen} onClose={closeModal} order={selectedOrder} />
     </div>
   )
 }
