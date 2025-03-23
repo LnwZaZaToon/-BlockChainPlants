@@ -8,6 +8,8 @@ import './Orders.css';
 const Order = () => {
 
   const [orders, setOrders] = useState([]);
+  const [publicKey , setPublicKey]= useState(null);
+  const [Isverified , setIsverified] = useState(false);
 
   const fetchAllOrders = async () => {
     const response = await axios.get(`${url}/api/order/list`)
@@ -19,6 +21,19 @@ const Order = () => {
       toast.error("Error")
     }
   }
+  const fetchPublicKey = async () => {
+    try {
+      let Data = {
+        userId: orders.userId 
+      }
+      const response = await axios.post(`${url}/api/user/getpublickey`, Data);
+      console.log(response); 
+      setPublicKey(response.data.metaMaskAccount);
+    } catch (err) {
+      toast.error("Error fetching data");
+    }
+  };
+  
 
   const statusHandler = async (event,orderId) => {
     console.log(event,orderId);
@@ -26,15 +41,43 @@ const Order = () => {
       orderId,
       status:event.target.value
     })
+
     if(response.data.success)
     {
       await fetchAllOrders();
     }
-  }
+  if (publicKey == null) return;
 
+  try {
+    const order = orders.find(order => order._id === orderId);
+
+    if (!order) {
+      console.error("❌ Order not found in state!");
+      return;
+    }
+
+    console.log("✅ Found order:", order);
+
+    console.log(order.status)
+    if (order.status === 'verified') {
+      const contractResponse = await axios.post(
+        `${url}/api/contract/completeQuest?userAddress=${publicKey}`
+      );
+      console.log("Transaction response:", contractResponse);
+      toast.success('Transaction complete');
+    }
+  } catch (error) {
+    toast.error("Transaction error");
+    console.error("Transaction error:", error);
+  }
+};
 
   useEffect(() => {
-    fetchAllOrders();
+    const fetchData = async () => {
+      await fetchAllOrders();  // Fetch orders first
+      await fetchPublicKey();  // Then fetch public key
+    };
+    fetchData()
   }, [])
 
   return (
@@ -55,18 +98,18 @@ const Order = () => {
                   }
                 })}
                 </p>
-              <p className='order-item-name'>{order.address.firstName+" "+order.address.lastName}</p>
+              <p className='order-item-name'>{"userId: "+order.userId}</p>
+              <p className='order-item-name'>{"public key: "+publicKey}</p>
               <div className='order-item-address'>
-                <p>{order.address.street+","}</p>
-                <p>{order.address.city+", "+order.address.state+", "+order.address.country+", "+order.address.zipcode}</p>
+
               </div>
               <p className='order-item-phone'>{order.address.phone}</p>
             </div>
             <p>Items : {order.items.length}</p>
             <p>${order.amount}</p>
-            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id="">
-              <option value="Product Processing">Product Processing</option>
-              <option value="verified">verified</option>
+            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id=""   >
+              <option value="verified">not verified</option>
+              <option value="Product Processing">verified </option>
             </select>
           </div>
         ))}

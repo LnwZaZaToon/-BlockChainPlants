@@ -12,7 +12,7 @@ console.log(process.env.PRIVATE_KEY);  // Ensure your private key is loaded from
 const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545');  // Ganache RPC URL
 
 // Your contract address (ensure it's deployed to Ganache)
-const contractAddress = "0x9C5DBF4a8fD78846DA0177Cb988316F5D123a80B"; 
+const contractAddress = "0x243BF4CF0E9fb8122E069A039f361Cc0a93a89dd"; 
 
 //sapolia 0xbA82e4CB199791368a14E67C37a0B94E28d6077c
 
