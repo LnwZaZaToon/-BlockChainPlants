@@ -2,13 +2,12 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\Toon\\Desktop\\autoparts-main\\backend\\Contracts\\contract.sol": {
-      "lastModificationDate": 1742615864383,
-      "contentHash": "e43fb30478ec234b8f15d9d7239b42b5",
+      "lastModificationDate": 1742722474704,
+      "contentHash": "a7bd7ca861f40ac538f3ba4b1f28dbe3",
       "sourceName": "Contracts/contract.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.0",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
             "enabled": false,
             "runs": 200

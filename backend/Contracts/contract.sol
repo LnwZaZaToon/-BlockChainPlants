@@ -20,14 +20,17 @@ contract QuestReward {
 
     // Function to complete a quest and reward a user with Ether
     function completeQuest(address user) external onlyOwner {
-        uint256 reward = 1 ether; // Reward in Ether (can change as needed)
+        uint256 reward = 1 ether; // Reward in Ether
+        require(address(this).balance >= reward, "Not enough Ether in contract");
+
         userCoins[user] += reward;
 
-        // Send Ether to the user
-        payable(user).transfer(reward);
+    // Send Ether to the user
+    payable(user).transfer(reward);
 
-        emit QuestCompleted(user, reward);
-    }
+    emit QuestCompleted(user, reward);
+}
+
 
     // Function to get the balance of a user
     function getBalance(address user) external view returns (uint256) {

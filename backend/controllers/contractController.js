@@ -4,19 +4,18 @@ import path from 'path';
 import contractABI from "../artifacts/Contracts/contract.sol/QuestReward.json" assert { type: 'json' };
 
 // Log the ABI to ensure it's loaded correctly
-
-
 dotenv.config({ path: path.resolve('C:/Users/Toon/Desktop/autoparts-main/backend/.env') });
 
-console.log(process.env.ALCHEMY_API_KEY);
-console.log(process.env.PRIVATE_KEY);
+console.log(process.env.PRIVATE_KEY);  // Ensure your private key is loaded from .env
 
-// Correct provider initialization using ethers.providers.JsonRpcProvider
-//const provider = ethers.getDefaultProvider('sepolia');
-const provider = new ethers.providers.JsonRpcProvider(process.env.ALCHEMY_API_KEY);
+// Correct provider initialization for Ganache
+const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545');  // Ganache RPC URL
 
-// Your contract address
-const contractAddress = "0xbA82e4CB199791368a14E67C37a0B94E28d6077c"; 
+// Your contract address (ensure it's deployed to Ganache)
+const contractAddress = "0x9C5DBF4a8fD78846DA0177Cb988316F5D123a80B"; 
+
+//sapolia 0xbA82e4CB199791368a14E67C37a0B94E28d6077c
+
 const abi = contractABI.abi;
 const contract = new ethers.Contract(contractAddress, abi, provider);
 
@@ -25,8 +24,8 @@ const privateKey = process.env.PRIVATE_KEY;
 const wallet = new ethers.Wallet(privateKey, provider);
 const signer = wallet; // Directly assign signer here
 
-const completeQuest = async () => {
-    const { userAddress } = req.body; // Assume the frontend sends the user's address to this API
+const completeQuest = async (req, res) => {
+    const { userAddress } = req.query; // Using req.body to get userAddress
 
     if (!userAddress) {
         return res.status(400).json({ error: "User address is required" });
@@ -39,16 +38,44 @@ const completeQuest = async () => {
             return res.status(403).json({ error: "Only the admin can complete quests" });
         }
 
-        // Call the completeQuest function
-        const tx = await contract.completeQuest(userAddress);
-        await tx.wait(); // Wait for the transaction to be mined
+        // Check the contract balance
+        const contractBalance = await provider.getBalance(contract.address);
+        console.log(`Contract Balance: ${ethers.utils.formatEther(contractBalance)} ETH`);
+
+        // If the contract balance is insufficient, send Ether to the contract
+        if (contractBalance.lt(ethers.utils.parseEther("1.0"))) {  // Check if the contract balance is less than 1 ETH
+            console.log("Contract has insufficient funds, sending 1 Ether to contract...");
+
+            const tx = await signer.sendTransaction({
+                to: contract.address,
+                value: ethers.utils.parseEther("1.0"),  // Send 1 Ether to the contract
+            });
+
+            console.log(`Transaction sent! TX Hash: ${tx.hash}`);
+            await tx.wait();  // Wait for the transaction to be mined
+            console.log("Ether sent to the contract!");
+        }
+
+        // Attach the signer to the contract to send a transaction
+        const contractWithSigner = contract.connect(signer); // Connect signer to contract
+
+        // Proceed with the quest completion
+        const tx = await contractWithSigner.completeQuest(userAddress, {
+            gasLimit: 1000000, // Manually set gas limit to a larger value
+            gasPrice: ethers.utils.parseUnits("10", "gwei"),  // Use a low gas price for testnet
+        });
+
+        console.log(`Transaction sent! TX Hash: ${tx.hash}`);
+        await tx.wait();  // Wait for the transaction to be mined
+        console.log("Transaction confirmed!");
 
         res.status(200).json({ message: "Quest completed and reward sent", txHash: tx.hash });
     } catch (error) {
         console.error("Error completing quest:", error);
-        res.status(500).json({ error: "Error completing quest" });
+        res.status(500).json({ error: `Error completing quest: ${error.message}` });
     }
 }
+
 
 const getBalance = async (req, res) => {
     const { userAddress } = req.query;
@@ -69,6 +96,7 @@ const getBalance = async (req, res) => {
                 return res.status(400).json({ error: "Invalid ENS name" });
             }
         }
+
         await new Promise(res => setTimeout(res, 300));
         // Now call getBalance with the resolved or original address
         const balance = await contract.getBalance(resolvedAddress);
@@ -79,5 +107,4 @@ const getBalance = async (req, res) => {
     }
 };
 
-
-export {completeQuest,getBalance};
+export { completeQuest, getBalance };
