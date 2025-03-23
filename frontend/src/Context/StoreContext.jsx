@@ -15,6 +15,7 @@ const StoreContextProvider = (props) => {
     const [token, setToken] = useState("")
     const [discountApplied, setDiscountApplied] = useState(false);
     const [metaMaskAccount, setMetaMaskAccount] = useState(null);
+    const [Balance , setBalance] = useState(null)
 
 
     const addToCart = async (itemId) => {
@@ -93,9 +94,17 @@ const StoreContextProvider = (props) => {
             console.error("Error saving MetaMask account:", error.response ? error.response.data : error);
         }
     };
-    
-    
 
+    const getBalance = async (props)=> {  
+       // console.log(props);
+        try {
+            const response = await axios.get(url+`/api/contract/getBalance?userAddress=${props}`)
+           // console.log(response.data.balance);
+            setBalance(response.data.balance);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     
     useEffect(() => {
@@ -109,6 +118,7 @@ const StoreContextProvider = (props) => {
             if (storedMetaMaskAccount) {
                 console.log("MetaMask account found in localStorage:", storedMetaMaskAccount);
                 setMetaMaskAccount(localStorage.getItem("metaMaskAccount"))
+                getBalance(localStorage.getItem("metaMaskAccount"));
             } else {
                 console.log("No MetaMask account found, please connect your wallet.");
             }
@@ -130,7 +140,9 @@ const StoreContextProvider = (props) => {
         loadCartData,
         setCartItems,
         metaMaskAccount,    // Include MetaMask account in context
-        connectMetaMask, 
+        connectMetaMask,
+        Balance,
+        setBalance,
     };
 
     return (
