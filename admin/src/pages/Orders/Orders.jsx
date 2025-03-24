@@ -48,6 +48,7 @@ const Order = () => {
     if(response.data.success)
     {
       await fetchAllOrders();
+      setIsverified(true)
     }
   if (publicKey == null) return;
 
@@ -62,13 +63,12 @@ const Order = () => {
     console.log("✅ Found order:", order);
 
     console.log(order.status)
-    if (order.status === 'verified') {
       const contractResponse = await axios.post(
         `${url}/api/contract/completeQuest?userAddress=${publicKey}`
       );
       console.log("Transaction response:", contractResponse);
       toast.success('Transaction complete');
-    }
+  
   } catch (error) {
     toast.error("Transaction error");
     console.error("Transaction error:", error);
@@ -119,10 +119,8 @@ const closeModal = () => {
             </div>
             <p>Items : {order.items.length}</p>
             <p>${order.amount}</p>
-            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id=""  disabled={order.status === "Product Processing"} >
-              <option value="verified">not verified</option>
-              <option value="Product Processing">verified </option>
-            </select>
+            <button className='btnTrans' onClick={(e)=>statusHandler(e,order._id)} value={"verified"} disabled= {order.status === "verified"}>verified </button>
+            {/* Test Button <button className='btnTrans' onClick={(e)=>statusHandler(e,order._id)} value={"notverified"} >verified </button> */}
             <button className='btnOrder' onClick={() => handleOrderClick(order)}>description</button>
           </div>
         ))}
