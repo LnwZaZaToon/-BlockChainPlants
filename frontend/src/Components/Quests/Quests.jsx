@@ -52,14 +52,6 @@ const Quests = () => {
         })}
       </div>
 
-      {selectedQuest && (
-        <div className="selected-quest">
-          <h3>Selected Quest:</h3>
-          <p>{selectedQuest.name}</p>
-          <p>{selectedQuest.description}</p>
-        </div>
-      )}
-
       {/* Render the LoginPopup if showLogin is true */}
       {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
     </div>

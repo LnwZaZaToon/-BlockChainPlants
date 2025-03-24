@@ -14,12 +14,13 @@ const Navbar = ({ setShowLogin }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("metaMaskAccount");
     setToken("");
     navigate('/');
     toast.success("Logout complete");
   }
 
-  return (
+   return (
     <div className='navbar'>
       <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
       <ul className="navbar-menu">
@@ -27,14 +28,18 @@ const Navbar = ({ setShowLogin }) => {
         <Link to="/quests" onClick={() => setMenu("Mechanical")} className={`${menu === "Mechanical" ? "active" : ""}`}>Quests</Link>
       </ul>
       <div className="navbar-right">
-      <div>
-            <button onClick={connectMetaMask} disabled = {metaMaskAccount!=null}>Connect MetaMask</button>
-            {metaMaskAccount ? (
-                <p>Connected MetaMask Account: {metaMaskAccount}</p>
-            ) : (
-                <p>No MetaMask account connected</p>
-            )}
-            <p>your Balance: {Balance}</p>        
+        <div className="metamask-container">
+          {metaMaskAccount ? (
+            <div className="metamask-connected">
+              <p className="metamask-account">Connected: {metaMaskAccount.slice(0, 6)}...{metaMaskAccount.slice(-4)}</p>
+              <p className="metamask-balance">Balance: {Balance} ETH</p>
+            </div>
+          ) : (
+            <button className="metamask-button" onClick={connectMetaMask}>
+              {/*<img src={assets.metamask_icon} alt="MetaMask" className="metamask-icon" />*/}
+              Connect Wallet
+            </button>
+          )}
         </div>
         <Link to='/cart' className='navbar-search-icon'>
           <img src={assets.basket_icon} alt="" />
@@ -44,16 +49,15 @@ const Navbar = ({ setShowLogin }) => {
           : <div className='navbar-profile'>
             <img src={assets.profile_icon} alt="" />
             <ul className='navbar-profile-dropdown'>
-              <li onClick={()=>navigate('/myorders')}> <img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
+              <li onClick={() => navigate('/myorders')}> <img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
               <hr />
-              <li onClick={logout}> <img src={assets.logout_icon} alt="" /> <p>Logout</p></li> 
+              <li onClick={logout}> <img src={assets.logout_icon} alt="" /> <p>Logout</p></li>
             </ul>
           </div>
         }
-
       </div>
     </div>
   )
 }
 
-export default Navbar
+export default Navbar;

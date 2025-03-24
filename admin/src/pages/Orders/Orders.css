@@ -1,51 +1,211 @@
-.order-item{
-    display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
-    align-items: start;
-    gap: 30px;
-    border: 1px solid tomato;
-    padding: 20px;
-    margin: 30px 0px;
-    font-size: 14px;
-    color: #505050;
+/* Main Container */
+.order {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8fbf8;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
-.order-item-parts,.order-item-name{
+
+.order h3 {
+    font-size: 24px;
     font-weight: 600;
+    color: #2d6a4f;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 10px;
 }
-.order-item-name{
-    margin-top: 30px;
-    margin-bottom: 5px;
+
+.order h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #95d5b2;
+    border-radius: 3px;
 }
-.order-item-address{
-    margin-bottom: 10px;
+
+/* Order List */
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.order-item select{
-    background-color: #ffe8e4;
-    border: 1px solid tomato;
-    width: max(10vw,120px);
+
+/* Order Item */
+.order-item {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #c8e6c9;
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.1);
+    border-color: #2d6a4f;
+}
+
+.order-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
     padding: 10px;
-    outline:none;
+    background-color: #e8f5e9;
+    border-radius: 8px;
 }
-@media(max-width:1000px){
-    .order-item{
-        font-size: 12px;
+
+.order-item-parts,
+.order-item-name {
+    font-weight: 600;
+    color: #2d6a4f;
+    margin: 0;
+}
+
+.order-item-address,
+.order-item-phone {
+    color: #6d6d6d;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* Status Select */
+.order-item select {
+    background-color: #e8f5e9;
+    border: 1px solid #2d6a4f;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    color: #2d6a4f;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.order-item select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    border-color: #ddd;
+    cursor: not-allowed;
+}
+
+.order-item select:focus {
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.2);
+}
+
+/* Description Button */
+.btnOrder {
+    width: 100%;
+    padding: 10px;
+    background-color: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnOrder:hover {
+    background-color: #1b5e20;
+    transform: translateY(-2px);
+}
+
+.btnOrder:active {
+    transform: translateY(0);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-verified {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .order {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .order-item {
         grid-template-columns: 0.5fr 2fr 1fr;
-        padding: 15px 8px;
+        gap: 15px;
+        padding: 15px;
     }
-    .order-item select{
-        padding: 5px;
-        font-size: 12px;
-    }
-    .order-item img{
+    
+    .order-item img {
         width: 40px;
+        height: 40px;
+    }
+    
+    .order-item select,
+    .btnOrder {
+        grid-column: span 2;
     }
 }
 
-.btnOrder{
-    max-width: 120px;
-    border: none;
-    padding: 10px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
+@media (max-width: 768px) {
+    .order-item {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .order-item select,
+    .btnOrder {
+        grid-column: span 1;
+    }
+    
+    .order-item-parts,
+    .order-item-name,
+    .order-item-address,
+    .order-item-phone {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .order {
+        padding: 15px;
+    }
+    
+    .order h3 {
+        font-size: 20px;
+    }
+    
+    .order-item {
+        padding: 15px 10px;
+    }
 }

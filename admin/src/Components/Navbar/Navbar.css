@@ -1,13 +1,137 @@
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 4%;
+    padding: 15px 5%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #e8f5e9;
 }
-.navbar .logo{
-    width: max(10%,60px);
-    margin-left: 70px;
+
+.navbar .logo {
+    width: 70px;
+    height: auto;
+    transition: transform 0.3s ease;
+    margin-left: 0; /* Removed the fixed margin for better responsiveness */
 }
-.navbar .profile{
-    width: 30px;
+
+.navbar .logo:hover {
+    transform: scale(1.05);
+}
+
+.navbar .profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d8f3dc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.navbar .profile:hover {
+    border-color: #2d6a4f;
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+}
+
+/* Admin-specific elements can be added here */
+.navbar-admin-badge {
+    background-color: #2d6a4f;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+/* Optional: Add a dropdown menu for admin actions */
+.navbar-profile-dropdown {
+    position: absolute;
+    right: 5%;
+    top: 70px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border: 1px solid #e8f5e9;
+}
+
+.navbar-profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    top: 80px;
+}
+
+.navbar-profile-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: #2d6a4f;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.navbar-profile-dropdown li:hover {
+    color: #1b5e20;
+    transform: translateX(5px);
+}
+
+.navbar-profile-dropdown img {
+    width: 18px;
+    height: 18px;
+}
+
+.navbar-profile-dropdown hr {
+    border: none;
+    height: 1px;
+    background: #d8f3dc;
+    margin: 5px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 4%;
+    }
+    
+    .navbar .logo {
+        width: 60px;
+    }
+    
+    .navbar .profile {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .navbar-profile-dropdown {
+        width: 180px;
+        right: 4%;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 3%;
+    }
+    
+    .navbar .logo {
+        width: 50px;
+    }
+    
+    .navbar-admin-badge {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
 }
