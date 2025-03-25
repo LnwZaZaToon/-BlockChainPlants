@@ -12,6 +12,7 @@ import PlaceOrder from './Pages/PlaceOrder/PlaceOrder';
 import LoginPopup from './Components/LoginPopup/LoginPopup';
 import Quests from './Components/Quests/Quests';
 import History from './Pages/History/History';
+import Product from './Pages/Product/Product'
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,6 +30,7 @@ const App = () => {
           <Route path='/' element={<Home />}/>
           <Route path='/cart' element={<Cart />}/>
           <Route path='/order' element={<PlaceOrder />}/>
+          <Route path='/product' element={<Product />}/>
           <Route path='/history' element={<History />}/>
           <Route path='/myorders' element={<MyOrders />}/>
           <Route path='/quests' element={<Quests category= 'Mechanical'/>}/>
