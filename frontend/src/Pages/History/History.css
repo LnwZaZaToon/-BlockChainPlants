@@ -1,0 +1,284 @@
+/* History Page Container */
+.history-page {
+    padding: 30px 5%;
+    background-color: #f8fbf8;
+    min-height: 100vh;
+  }
+  
+  .history-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .history-container h2, 
+  .history-container h3 {
+    color: #2d6a4f;
+    margin-bottom: 25px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .history-container h2::after,
+  .history-container h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: #95d5b2;
+    border-radius: 3px;
+  }
+  
+  /* Orders List */
+  .orders-list {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .no-orders {
+    text-align: center;
+    padding: 30px;
+    color: #6d6d6d;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Order Card */
+  .order-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8f5e9;
+    transition: transform 0.3s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.1);
+  }
+  
+  .order-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .order-header img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    padding: 8px;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+  }
+  
+  .order-date {
+    color: #6d6d6d;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .order-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #2d6a4f;
+  }
+  
+  .status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ff9800; /* Default for pending */
+  }
+  
+  .status-dot.verified {
+    background-color: #4caf50;
+  }
+  
+  .status-dot.completed {
+    background-color: #2d6a4f;
+  }
+  
+  .order-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .order-items {
+    color: #1b5e20;
+    flex: 1;
+  }
+  
+  .order-amount {
+    color: #2d6a4f;
+    font-weight: 600;
+  }
+  
+  /* Blockchain Info */
+  .blockchain-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #c8e6c9;
+  }
+  
+  .tx-hash {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: monospace;
+    color: #1b5e20;
+    font-size: 14px;
+  }
+  
+  .eth-icon {
+    color: #627eea; /* Ethereum color */
+  }
+  
+  .copy-btn, 
+  .view-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6d6d6d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    transition: color 0.2s;
+  }
+  
+  .copy-btn:hover {
+    color: #2d6a4f;
+  }
+  
+  .view-btn {
+    background-color: #e8f5e9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+  
+  .view-btn:hover {
+    background-color: #c8e6c9;
+  }
+  
+  /* Transaction History Table */
+  .tx-history {
+    margin-top: 40px;
+  }
+  
+  .tx-table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8f5e9;
+  }
+  
+  .tx-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    background-color: #e8f5e9;
+    padding: 15px 20px;
+    font-weight: 600;
+    color: #2d6a4f;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  
+  .tx-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e8f5e9;
+    align-items: center;
+  }
+  
+  .tx-row:last-child {
+    border-bottom: none;
+  }
+  
+  .tx-hash-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1b5e20;
+    font-family: monospace;
+  }
+  
+  .status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    width: fit-content;
+  }
+  
+  .status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .status.verified {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status.completed {
+    background-color: #c8e6c9;
+    color: #1b5e20;
+  }
+  
+  .tx-items {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
+    .tx-header,
+    .tx-row {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    
+    .tx-header div:nth-child(4),
+    .tx-header div:nth-child(5),
+    .tx-row div:nth-child(4),
+    .tx-row div:nth-child(5) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .history-page {
+      padding: 20px 3%;
+    }
+    
+    .tx-header,
+    .tx-row {
+      grid-template-columns: 2fr 1fr;
+    }
+    
+    .tx-header div:nth-child(3),
+    .tx-row div:nth-child(3) {
+      display: none;
+    }
+    
+    .order-details {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }

@@ -120,7 +120,7 @@ const closeModal = () => {
             <p>Items : {order.items.length}</p>
             <p>${order.amount}</p>
             <button className='btnTrans' onClick={(e)=>statusHandler(e,order._id)} value={"verified"} disabled= {order.status === "verified"}>verified </button>
-            {/* Test Button <button className='btnTrans' onClick={(e)=>statusHandler(e,order._id)} value={"notverified"} >verified </button> */}
+             Test Button <button className='btnTrans' onClick={(e)=>statusHandler(e,order._id)} value={"notverified"} >verified </button> 
             <button className='btnOrder' onClick={() => handleOrderClick(order)}>description</button>
           </div>
         ))}

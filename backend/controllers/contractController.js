@@ -107,4 +107,61 @@ const getBalance = async (req, res) => {
     }
 };
 
-export { completeQuest, getBalance };
+const getUserTransactions = async (req, res) => {
+    const { userAddress } = req.query;
+
+    if (!userAddress) {
+        return res.status(400).json({ error: "User address is required" });
+    }
+
+    try {
+        const latestBlock = await provider.getBlockNumber();
+        const userAddressLower = userAddress.toLowerCase();
+        let transactions = [];
+
+        console.log(`Fetching transactions for user: ${userAddress}`);
+
+        // Scan blocks in reverse (latest first)
+        for (let i = latestBlock; i >= 0; i--) {
+            const block = await provider.getBlockWithTransactions(i);
+
+            if (block && block.transactions.length > 0) {
+                // Filter transactions sent to your contract
+                const contractTxns = block.transactions.filter(
+                    tx => tx.to && tx.to.toLowerCase() === contractAddress.toLowerCase()
+                );
+
+                // Decode transactions to find `completeQuest(userAddress)`
+                for (const tx of contractTxns) {
+                    try {
+                        // Decode the transaction input
+                        const txData = tx.data;
+                        const iface = new ethers.utils.Interface(contractABI.abi);
+                        const decoded = iface.parseTransaction({ data: txData });
+
+                        // Check if it's a `completeQuest` call with the target userAddress
+                        if (
+                            decoded.name === "completeQuest" &&
+                            decoded.args[0].toLowerCase() === userAddressLower
+                        ) {
+                            transactions.push(tx);
+                        }
+                    } catch (e) {
+                        // Skip if decoding fails (not a `completeQuest` call)
+                    }
+                }
+            }
+
+            // Early exit if we've scanned enough blocks (optional)
+            if (transactions.length > 0 && i < latestBlock - 1000) break;
+        }
+
+        console.log(`Found ${transactions.length} reward transactions for ${userAddress}`);
+        res.status(200).json({ transactions });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "Failed to fetch transactions" });
+    }
+};
+
+export { completeQuest, getBalance,getUserTransactions };
