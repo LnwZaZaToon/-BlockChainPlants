@@ -12,7 +12,7 @@ console.log(process.env.PRIVATE_KEY);  // Ensure your private key is loaded from
 const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545');  // Ganache RPC URL
 
 // Your contract address (ensure it's deployed to Ganache)
-const contractAddress = "0x243BF4CF0E9fb8122E069A039f361Cc0a93a89dd"; 
+const contractAddress = "0x6950328f6E8fE491CdEb418F06Fc8A60c4245A0D"; 
 
 //sapolia 0xbA82e4CB199791368a14E67C37a0B94E28d6077c
 
@@ -23,6 +23,8 @@ const contract = new ethers.Contract(contractAddress, abi, provider);
 const privateKey = process.env.PRIVATE_KEY;
 const wallet = new ethers.Wallet(privateKey, provider);
 const signer = wallet; // Directly assign signer here
+const contractWithSigner = contract.connect(wallet);
+
 
 const completeQuest = async (req, res) => {
     const { userAddress } = req.query; // Using req.body to get userAddress
@@ -164,4 +166,38 @@ const getUserTransactions = async (req, res) => {
     }
 };
 
-export { completeQuest, getBalance,getUserTransactions };
+const postBuyproduct = async (req, res) => {
+    const { userAddress, coin } = req.query;
+
+    if (!userAddress) {
+        return res.status(400).json({ error: "User address is required" });
+    }
+
+    try {
+        console.log("Contract Address:", contract.address);
+        console.log("Contract ABI:", contract.interface.fragments);
+
+        // Ensure the contract has a signer
+        const contractWithSigner = contract.connect(wallet);
+
+        // Check if userAddress is an ENS name and resolve it
+        let resolvedAddress = userAddress;
+        if (userAddress.includes('.eth')) {
+            resolvedAddress = await provider.resolveName(userAddress);
+            if (!resolvedAddress) {
+                return res.status(400).json({ error: "Invalid ENS name" });
+            }
+        }
+
+        // Call redeemCoins with the correct contract instance
+        const tx = await contractWithSigner.redeemCoins(resolvedAddress, coin);
+        await tx.wait(); // Wait for transaction confirmation
+
+        res.status(200).json({ message: "Transaction successful", txHash: tx.hash });
+    } catch (error) {
+        console.error("Error Buying product:", error);
+        res.status(500).json({ error: error.message || "Error Buying product" });
+    }
+};
+
+export { completeQuest, getBalance,getUserTransactions,postBuyproduct };

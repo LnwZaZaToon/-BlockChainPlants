@@ -16,7 +16,7 @@ import '../../App.css';
 const LoginPopup = ({ setShowLogin }) => {
   const { setToken, url, loadCartData } = useContext(StoreContext);
   const [currState, setCurrState] = useState('Login');
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const [data, setData] = useState({
     name: '',
@@ -71,7 +71,7 @@ const LoginPopup = ({ setShowLogin }) => {
           <video src={video} autoPlay muted loop></video>
 
           <div className="textDiv">
-            <h2 className="title">Create And Sell Extraordinary Product</h2>
+            <h2 className="title">Planting trees helps reduce carbon.</h2>
             <p>Adopt the pace of nature!</p>
           </div>
 
@@ -118,12 +118,11 @@ const LoginPopup = ({ setShowLogin }) => {
               </div>
             </div>
 
-            {currState === 'Login' && (
+          {currState === 'Login' && (
               <div className='loginsignup-agree'>
-                <input type='checkbox' id='terms' checked={isChecked} onChange={handleCheckboxChange} />
-                <label htmlFor='terms'>I agree to the terms of use & privacy policy.</label>
+                <label htmlFor='terms'>Welcome back.</label>
               </div>
-            )}
+            )} 
 
             <button type='submit' className='btn flex'>
               <span>{currState === 'Login' ? 'Login' : 'Sign Up'}</span>

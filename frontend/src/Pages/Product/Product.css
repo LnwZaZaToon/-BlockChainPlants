@@ -1,60 +1,116 @@
-/* Product Page Container */
-.product-page {
+/* Product Exchange Page */
+.product-exchange-page {
     margin: 30px 5% 50px;
-    padding: 20px;
+    padding: 30px;
     background-color: #f8fbf8;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.product-page h1 {
-    font-size: max(2vw, 28px);
+  }
+  
+  .exchange-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .page-title {
+    font-size: 2.2rem;
     font-weight: 700;
     color: #2d6a4f;
-    margin-bottom: 20px;
-    text-align: center;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.product-page h1::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: #95d5b2;
-    border-radius: 3px;
-}
-
-/* Product Grid Layout */
-.products-container {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .title-icon {
+    font-size: 1.8rem;
+    color: #95d5b2;
+  }
+  
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: #6d6d6d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  /* Wallet Status */
+  .wallet-status {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8f5e9;
+    font-size: 0.95rem;
+  }
+  
+  .wallet-connected, 
+  .wallet-disconnected,
+  .points-balance,
+  .login-required {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .wallet-connected {
+    color: #2d6a4f;
+  }
+  
+  .wallet-disconnected {
+    color: #f44336;
+  }
+  
+  .points-balance {
+    color: #ff9800;
+    font-weight: 500;
+  }
+  
+  .login-required {
+    color: #6d6d6d;
+  }
+  
+  .wallet-icon {
+    font-size: 1.2rem;
+  }
+  
+  .points-icon, .lock-icon {
+    font-size: 1rem;
+  }
+  
+  /* Product Grid Layout */
+  .products-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
-    margin-top: 40px;
-}
-
-/* Individual Product Card */
-.product-card {
+    margin: 40px 0;
+  }
+  
+  /* Product Card */
+  .product-card {
     background: white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     border: 1px solid #e8f5e9;
+    cursor: pointer;
     position: relative;
-}
-
-.product-card:hover {
+  }
+  
+  .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
     border-color: #c8e6c9;
-}
-
-.product-card::before {
+  }
+  
+  .product-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -62,89 +118,169 @@
     width: 100%;
     height: 5px;
     background: linear-gradient(90deg, #5e8c61, #95d5b2);
-}
-
-/* Product Image */
-.product-image {
+  }
+  
+  .product-card.selected {
+    border: 2px solid #2d6a4f;
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.2);
+  }
+  
+  /* Product Image */
+  .product-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+  }
+  
+  .product-image {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
-}
-
-/* Product Name */
-.product-name {
-    font-size: 18px;
+    transition: transform 0.5s ease;
+  }
+  
+  .product-card:hover .product-image {
+    transform: scale(1.05);
+  }
+  
+  .product-value-badge {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(45, 106, 79, 0.9);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(2px);
+  }
+  
+  .coin-icon {
+    font-size: 0.9rem;
+  }
+  
+  /* Product Info */
+  .product-info {
+    padding: 20px;
+  }
+  
+  .product-name {
+    font-size: 1.3rem;
     font-weight: 600;
     color: #2d6a4f;
-    margin: 15px 0;
-    text-align: center;
-}
-
-/* Product Description */
-.product-description {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Product Value */
-.product-value {
-    font-size: 16px;
-    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .product-icon {
+    font-size: 1.1rem;
     color: #95d5b2;
-    text-align: center;
+  }
+  
+  .product-description {
+    font-size: 0.95rem;
+    color: #555;
     margin-bottom: 20px;
-}
-
-/* Exchange Button */
-.exchange-button {
+    line-height: 1.5;
+  }
+  
+  /* Exchange Button */
+  .exchange-button {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     background: #2d6a4f;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s;
-}
-.exchange-button:disabled {
-    background: #4d9952;
-
-}
-
-.exchange-button:hover {
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .exchange-button.selected {
     background: #1b5e20;
-}
-
-/* Selected Product State */
-.product-card.selected {
-    border: 2px solid #2d6a4f;
-    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.2);
-}
-
-/* Responsive Design */
-@media (max-width: 900px) {
+    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+  }
+  
+  .exchange-button:hover:not(:disabled) {
+    background: #1b5e20;
+    transform: translateY(-2px);
+  }
+  
+  .exchange-button:disabled {
+    background: #c8e6c9;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Exchange Info */
+  .exchange-info {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8f5e9;
+  }
+  
+  .exchange-info h3 {
+    color: #2d6a4f;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+  }
+  
+  .exchange-info ol {
+    padding-left: 20px;
+    color: #555;
+    line-height: 1.8;
+  }
+  
+  .exchange-info li {
+    margin-bottom: 8px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
     .products-container {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 20px;
-    }
-}
-
-@media (max-width: 600px) {
-    .product-page {
-        margin: 20px 3%;
-        padding: 15px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
     }
     
-    .product-page h1 {
-        font-size: 24px;
+    .wallet-status {
+      flex-direction: column;
+      gap: 15px;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .product-exchange-page {
+      margin: 20px 3%;
+      padding: 20px;
+    }
+    
+    .page-title {
+      font-size: 1.8rem;
+      flex-direction: column;
+      gap: 8px;
     }
     
     .products-container {
-        grid-template-columns: 1fr;
-        gap: 25px;
+      grid-template-columns: 1fr;
     }
-}
+    
+    .product-image-container {
+      height: 180px;
+    }
+  }

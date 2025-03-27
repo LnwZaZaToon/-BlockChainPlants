@@ -19,21 +19,27 @@ const Navbar = ({ setShowLogin }) => {
     navigate('/');
     toast.success("Logout complete");
   }
+  const handleNavigation = (path,path2) => {
+    setShowLogin(false);
+    setMenu(path2);
+    navigate(path);  
+  }
+  
 
    return (
     <div className='navbar'>
       <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
       <ul className="navbar-menu">
-        <Link to="/" onClick={() => setMenu("home")} className={`${menu === "home" ? "active" : ""}`}>Home</Link>
-        <Link to="/quests" onClick={() => setMenu("quests")} className={`${menu === "quests" ? "active" : ""}`}>Quests</Link>
-        <Link to="/product" onClick={() => setMenu("product")} className={`${menu === "product" ? "active" : ""}`}>product</Link>
+        <Link to="/" onClick={() => handleNavigation("/","home")  } className={`${menu === "home" ? "active" : ""}`}>Home</Link>
+        <Link to="/quests" onClick={() => handleNavigation("/quests","quests") } className={`${menu === "quests" ? "active" : ""}`}>Quests</Link>
+        <Link to="/product" onClick={() => handleNavigation("/product","product") } className={`${menu === "product" ? "active" : ""}`}>product</Link>
       </ul>
       <div className="navbar-right">
         <div className="metamask-container">
           {metaMaskAccount ? (
             <div className="metamask-connected">
               <p className="metamask-account">Connected: {metaMaskAccount.slice(0, 6)}...{metaMaskAccount.slice(-4)}</p>
-              <p className="metamask-balance">Balance: {Balance} ETH</p>
+              <p className="metamask-balance">Balance: {Balance} Greeen Points</p>
             </div>
           ) : (
             <button className="metamask-button" onClick={connectMetaMask}>

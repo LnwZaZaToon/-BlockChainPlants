@@ -76,11 +76,11 @@ const Add = () => {
                     </div>
                     <div className='add-price flex-col'>
                         <p>Product Price</p>
-                        <input type="Number" name='price' onChange={onChangeHandler} value={data.price} placeholder='฿69' />
+                        <input disabled type="Number" name='price' onChange={onChangeHandler} value={1} placeholder='฿69' />
                     </div>
                     <div className='add-price flex-col'>
                         <p>Amount</p>
-                        <input type="Number" name='amount' onChange={onChangeHandler} value={data.amount} placeholder='1' />
+                        <input disabled type="Number" name='amount' onChange={onChangeHandler} value={1} placeholder='1' />
                     </div>
                 </div>
                 <button type='submit' className='add-btn' >ADD</button>

@@ -4,7 +4,7 @@ import header_img from './header_img.png'
 import cross_icon from './cross_icon.png'
 import search_icon from './search_icon.png'
 import logout_icon from './logout_icon.png'
-import parcel_icon from './parcel_icon.png'
+import parcel_icon from './logo.png'
 import basket_icon from './basket_icon.png'
 import profile_icon from './profile_icon.png'
 import twitter_icon from './twitter_icon.png'
@@ -15,6 +15,13 @@ import facebook_icon from './facebook_icon.png'
 import add_icon_white from './add_icon_white.png'
 import add_icon_green from './add_icon_green.png'
 import remove_icon_red from './remove_icon_red.png'
+import manu from './manu.png'
+import madrid from './madrid.jpg';
+import guitar from './guitar.jpg';
+import wand from './wand.jpg'
+import plantt from './plant.jpg';
+import plant2 from './plantreal.jpg';
+import carbon from './carbon.jpg'
 
 export const assets = {
     logo,
@@ -34,4 +41,11 @@ export const assets = {
     add_icon_green,
     add_icon_white,
     remove_icon_red,
+    manu,
+    madrid,
+    guitar,
+    wand,
+    plantt,
+    plant2,
+    carbon
 }
