@@ -56,7 +56,7 @@ const Navbar = ({ setShowLogin }) => {
           : <div className='navbar-profile'>
             <img src={assets.profile_icon} alt="" />
             <ul className='navbar-profile-dropdown'>
-              <li onClick={() => navigate('/myorders')}> <img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
+              <li onClick={() => navigate('/myorders')}> <img src={assets.bag_icon} alt="" /> <p>Quest list</p></li>
               <hr />
               <li onClick={() => navigate('/history')}> <img src={assets.bag_icon} alt="" /> <p>History</p></li>
               <hr />

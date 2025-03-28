@@ -42,10 +42,12 @@ const Cart = () => {
 
     try {
         let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-
+       // console.log(response)
         if (response.data.success) {
+         // console.log("god")
             toast.success("Quest started! Complete it before taking another.");
-            window.location.replace(response.data.session_url);
+           // window.location.replace(response.data.session_url);
+           navigate('/myorders');
         } else {
             toast.error(response.data.message);
         }

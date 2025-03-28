@@ -22,8 +22,8 @@ const Add = () => {
         const formData = new FormData();
         formData.append("name", data.name);
         formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("amount", Number(data.amount));
+        formData.append("price", Number(1));
+        formData.append("amount", Number(1));
         formData.append("category", data.category);
         formData.append("image", image);
         const response = await axios.post(`${url}/api/parts/add`, formData);
@@ -32,8 +32,8 @@ const Add = () => {
             setData({
                 name: "",
                 description: "",
-                price: "",
-                amount: "",
+                price: "1",
+                amount: "1",
                 category: "quests"
             })
             setImage(false);

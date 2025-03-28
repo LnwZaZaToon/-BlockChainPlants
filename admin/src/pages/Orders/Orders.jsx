@@ -94,7 +94,7 @@ const closeModal = () => {
 
   return (
     <div className='order add'>
-      <h3>Order Page</h3>
+      <h3>Quest verification </h3>
       <div className="order-list">
         {orders.map((order, index) => (
           <div key={index} className='order-item' >
