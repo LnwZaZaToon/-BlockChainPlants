@@ -48,6 +48,80 @@
     transition: all 0.3s ease;
 }
 
+/* No Orders Found - Plant Themed */
+
+
+
+.my-orders .no-orders p {
+    margin: 0 0 20px;
+    font-weight: 500;
+    color: #1b5e20;
+}
+
+.my-orders .no-orders .plant-icon {
+    font-size: 60px;
+    color: #4caf50;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: gentleSway 3s ease-in-out infinite;
+}
+
+.my-orders .no-orders .sub-message {
+    font-size: 14px;
+    color: #689f38;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+.my-orders .no-orders .leaf-decoration {
+    position: absolute;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.my-orders .no-orders .leaf-decoration:nth-child(1) {
+    top: 10px;
+    left: 10px;
+    font-size: 40px;
+    transform: rotate(-15deg);
+}
+
+.my-orders .no-orders .leaf-decoration:nth-child(2) {
+    bottom: 10px;
+    right: 10px;
+    font-size: 50px;
+    transform: rotate(25deg);
+}
+
+@keyframes gentleSway {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(5deg);
+    }
+}
+
+/* Add this to your existing button styles */
+.my-orders .no-orders .explore-btn {
+    background-color: #a5d6a7;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    color: #1b5e20;
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+.my-orders .no-orders .explore-btn:hover {
+    background-color: #81c784;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
+}
+
 .my-orders-order:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(46, 125, 50, 0.1);

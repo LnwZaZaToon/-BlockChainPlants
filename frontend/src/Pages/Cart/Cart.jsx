@@ -6,14 +6,29 @@ import axios from 'axios';
 import './Cart.css';
 
 const Cart = () => {
-  const { cartItems, parts_list, removeFromCart, getTotalCartAmount, url, token } = useContext(StoreContext);
+  const { cartItems, parts_list, removeFromCart, getTotalCartAmount, url, token ,fetchPartsList} = useContext(StoreContext);
   const navigate = useNavigate();
 
-  const handleRemoveFromCart = (itemId) => {
+  const handleRemoveFromCart = async (itemId) => {
     removeFromCart(itemId);
-    toast.success("Item has been removed from the cart.");
-  };
 
+    try {
+        // Making the API call to add back an item
+        const api = await axios.post(`http://localhost:4000/api/parts/plus?id=${itemId}`);
+        console.log(api);
+
+        // Fetch the updated parts list after the item is removed
+        fetchPartsList();
+
+        toast.success("Item has been removed from the cart.");
+    } catch (error) {
+        console.error("Error removing item from cart:", error);
+        toast.error("There was an error removing the item from the cart.");
+    }
+};
+
+
+  
   const placeOrder = async () => {
     if (!token) {
         toast.error("Please sign in to start a quest.");
@@ -37,7 +52,7 @@ const Cart = () => {
     let orderData = {
         userId: token, // Assuming token contains user ID
         items: orderItems,
-        amount: getTotalCartAmount() + 0.75,
+        amount: 1,
     };
 
     try {
@@ -75,7 +90,7 @@ const Cart = () => {
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <div>{cartItems[item._id]}</div>
-                  <p>${item.price * cartItems[item._id]}</p>
+                  <p>${item.price }</p>
                   <p className='cart-items-remove-icon' onClick={() => handleRemoveFromCart(item._id)}>x</p>
                 </div>
                 <hr />

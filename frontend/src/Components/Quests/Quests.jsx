@@ -6,7 +6,7 @@ import LoginPopup from '../LoginPopup/LoginPopup'; // Import the popup
 import './Mechanical.css';
 
 const Quests = () => {
-  const { parts_list, token } = useContext(StoreContext);
+  const { parts_list, token ,fetchPartsList} = useContext(StoreContext);
   const [category, setCategory] = useState("All");
   const storedQuest = JSON.parse(localStorage.getItem('selectedQuest')) || null;
   const [selectedQuest, setSelectedQuest] = useState(storedQuest);
@@ -34,7 +34,7 @@ const Quests = () => {
 
       <div className='parts-display-list'>
         {parts_list.map((item) => {
-          if (category === "All" || category === item.category) {
+            if ((category === "All" || category === item.category) && item.amount > 0) {
             return (
               <div key={item._id} className="quest-item">
                 <PartsItem 

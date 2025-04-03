@@ -35,9 +35,9 @@ const MyOrders = () => {
 
     try {
       const response = await axios.post(url + "/api/order/addimages", formData, {
-        headers: { 
+        headers: {
           "Content-Type": "multipart/form-data",
-          token 
+          token
         }
       });
 
@@ -58,32 +58,37 @@ const MyOrders = () => {
       <h2>Your Quest</h2>
       <div className="container">
         {data.length === 0 ? (
-          <p>No orders found.</p>
+          <div className='no-orders'>
+            <span className="plant-icon">🌱</span>
+            <span className="leaf-decoration">🍃</span>
+            <span className="leaf-decoration">🌿</span>
+            <p>Your Quest is empty</p>
+          </div>
         ) : (
-          data.map((order, index) => (
+          data.reverse().map((order, index) => (
             <div key={index} className='my-orders-order'>
               <img src={assets.parcel_icon} alt="Parcel" />
               <p>
                 {order.items?.map(item => `${item.name} x ${item.quantity}`).join(", ")}
               </p>
-              <p>${order.amount}.00</p>
+              <p> {order.amount}.00 carbon credit</p>
               <p>Items: {order.items?.length || 0}</p>
               <p>
-                <span>&#x25cf;</span> 
+                <span>&#x25cf;</span>
                 <b>
                   {order.status === "pending" ? "Waiting for Admin Verification" : order.status}
                 </b>
               </p>
 
               {/* Hidden file input for image upload */}
-              <input 
-                type="file" 
-                accept="image/*" 
-                style={{ display: "none" }} 
-                id={`upload-${order._id}`} 
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                id={`upload-${order._id}`}
                 onChange={(event) => handleImageUpload(event, order._id)}
               />
-              
+
               {/* Button to trigger file selection */}
               <button onClick={() => document.getElementById(`upload-${order._id}`).click()}>
                 Upload Image

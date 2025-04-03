@@ -1,6 +1,5 @@
 import partsModel from "../models/partsModel.js";
 import fs from 'fs';
-
 // all parts list
 const listParts = async (req, res) => {
     try {
@@ -52,4 +51,76 @@ const removeParts = async (req, res) => {
 
 }
 
-export { listParts, addParts, removeParts }
+const plusPart = async (req, res) => {
+    const { id } = req.query;
+
+    try {
+        // Sanitize the id: remove surrounding quotes and any extra whitespace or newline characters
+        const sanitizedId = id.replace(/^["']|["']$/g, '').trim();
+
+        // Check if the sanitizedId is a valid ObjectId (24 hex characters)
+        if (!/^[0-9a-fA-F]{24}$/.test(sanitizedId)) {
+            return res.json({ success: false, message: "Invalid ObjectId format" });
+        }
+
+        console.log(sanitizedId);
+        
+        // Find the part by ID
+        const part = await partsModel.findById(sanitizedId);
+        
+        if (!part) {
+            return res.json({ success: false, message: "Part not found" });
+        }
+
+        // Increment the 'amount' field
+        part.amount += 1;
+
+        // Save the updated part
+        await part.save();
+
+        // Respond with success message
+        res.json({ success: true, message: "Part amount incremented" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" });
+    }
+};
+
+const minusPart = async (req, res) => {
+    const { id } = req.query;
+
+    try {
+        // Sanitize the id: remove surrounding quotes and any extra whitespace or newline characters
+        const sanitizedId = id.replace(/^["']|["']$/g, '').trim();
+
+        // Check if the sanitizedId is a valid ObjectId (24 hex characters)
+        if (!/^[0-9a-fA-F]{24}$/.test(sanitizedId)) {
+            return res.json({ success: false, message: "Invalid ObjectId format" });
+        }
+
+        console.log(sanitizedId);
+        
+        // Find the part by ID
+        const part = await partsModel.findById(sanitizedId);
+        
+        if (!part) {
+            return res.json({ success: false, message: "Part not found" });
+        }
+
+        // Increment the 'amount' field
+        part.amount -= 1;
+
+        // Save the updated part
+        await part.save();
+
+        // Respond with success message
+        res.json({ success: true, message: "Part minus decremented" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" });
+    }
+};
+
+export { listParts, addParts, removeParts,plusPart ,minusPart}

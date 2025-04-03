@@ -17,7 +17,7 @@ const ProductPage = () => {
       description: "jersy for the best team",
       image: assets.manu,
       value: 3,
-      pointsName: "Green Points"
+      pointsName: "carbon credit"
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const ProductPage = () => {
       description: "jersy for the best team also",
       image: assets.madrid,
       value: 5,
-      pointsName: "Green Points"
+      pointsName: "carbon credit"
     },
     {
       id: 3,
@@ -33,15 +33,15 @@ const ProductPage = () => {
       description: "great sound",
       image: assets.guitar,
       value: 2,
-      pointsName: "Green Points"
+      pointsName: "carbon"
     },
     {
       id: 4,
-      name: "wand",
-      description: "from harry potter",
+      name: "recycle shirt",
+      description: "recycle shirt",
       image: assets.wand,
       value: 4,
-      pointsName: "Green Points"
+      pointsName: "carbon credit"
     },
   ];
 

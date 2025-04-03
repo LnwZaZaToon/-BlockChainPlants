@@ -1,4 +1,4 @@
-import { addParts, listParts, removeParts } from '../controllers/partsController.js';
+import { addParts, listParts, removeParts,plusPart ,minusPart} from '../controllers/partsController.js';
 import express from 'express';
 import multer from 'multer';
 
@@ -18,5 +18,7 @@ const upload = multer({ storage: storage})
 partsRouter.get("/list",listParts);
 partsRouter.post("/add",upload.single('image'),addParts);
 partsRouter.post("/remove",removeParts);
+partsRouter.post("/plus",plusPart);
+partsRouter.post("/minus",minusPart);
 
 export default partsRouter;

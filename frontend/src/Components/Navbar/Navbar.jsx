@@ -39,7 +39,7 @@ const Navbar = ({ setShowLogin }) => {
           {metaMaskAccount ? (
             <div className="metamask-connected">
               <p className="metamask-account">Connected: {metaMaskAccount.slice(0, 6)}...{metaMaskAccount.slice(-4)}</p>
-              <p className="metamask-balance">Balance: {Balance} Greeen Points</p>
+              <p className="metamask-balance">Balance: {Balance} carbon credit</p>
             </div>
           ) : (
             <button className="metamask-button" onClick={connectMetaMask}>

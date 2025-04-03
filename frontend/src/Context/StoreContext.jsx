@@ -143,6 +143,7 @@ const StoreContextProvider = (props) => {
         connectMetaMask,
         Balance,
         setBalance,
+        fetchPartsList
     };
 
     return (
