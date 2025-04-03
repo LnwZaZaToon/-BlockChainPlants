@@ -29,47 +29,57 @@ const Cart = () => {
 
 
   
-  const placeOrder = async () => {
-    if (!token) {
-        toast.error("Please sign in to start a quest.");
-        navigate('/cart');
-        return;
-    }
-    
-    if (getTotalCartAmount() === 0) {
-        toast.error("Your quest bag is empty.");
-        navigate('/cart');
-        return;
-    }
+const placeOrder = async () => {
+  if (!token) {
+    toast.error("Please sign in to start a quest.");
+    navigate('/cart');
+    return;
+  }
 
-    let orderItems = parts_list.map((item) => {
-        if (cartItems[item._id] > 0) {
-            return { ...item, quantity: cartItems[item._id] };
+  if (getTotalCartAmount() === 0) {
+    toast.error("Your quest bag is empty.");
+    navigate('/cart');
+    return;
+  }
+
+  let orderItems = parts_list.map((item) => {
+    if (cartItems[item._id] > 0) {
+      return { ...item, quantity: cartItems[item._id] };
+    }
+    return null;
+  }).filter(Boolean);
+
+  let orderData = {
+    userId: token, // Assuming token contains user ID
+    items: orderItems,
+    amount: 1,
+  };
+
+  try {
+    let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+
+    if (response.data.success) {
+      // Remove items from the database
+      for (const item of orderItems) {
+        try {
+         
+          await axios.post(`${url}/api/parts/remove`, { id: item._id });
+          handleRemoveFromCart(item._id)
+          console.log(`Removed ${item.name} from the database.`);
+          
+        } catch (error) {
+          console.error(`Error removing item ${item.name}:`, error);
         }
-        return null;
-    }).filter(Boolean);
-
-    let orderData = {
-        userId: token, // Assuming token contains user ID
-        items: orderItems,
-        amount: 1,
-    };
-
-    try {
-        let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-       // console.log(response)
-        if (response.data.success) {
-         // console.log("god")
-            toast.success("Quest started! Complete it before taking another.");
-           // window.location.replace(response.data.session_url);
-           navigate('/myorders');
-        } else {
-            toast.error(response.data.message);
-        }
-    } catch (error) {
-        toast.error("Failed to start quest. Try again.");
-        console.error("Order Error:", error);
+      }
+      toast.success("Quest started! Complete it before taking another.");
+      navigate('/myorders');
+    } else {
+      toast.error(response.data.message);
     }
+  } catch (error) {
+    toast.error("Failed to start quest. Try again.");
+    console.error("Order Error:", error);
+  }
 };
 
 

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import userModel from "../models/userModel.js";
+import mongoose from 'mongoose';
 
 //create token
 const createToken = (id) => {
@@ -80,18 +81,32 @@ const getData = async(req , res) =>{
 
 const getPublicKey = async (req, res) => {
     try {
-      const { userId } = req.body;  
-      const data = await userModel.findOne({ userId: userId }, 'metaMaskAccount');  // 'publicKey' is the field you want
-     // console.log(data);
-      if (!data) {
-        return res.status(404).json({ message: 'public key not found' });
-      }
-      res.status(200).json(data);
-    } catch (err) {
-      res.status(500).json({ message: 'Failed to fetch data', error: err });
-    }
-  };
+        const { userId } = req.query;
 
+        // Sanitize userId (remove extra quotes and trim spaces)
+        const sanitizedId = userId.replace(/^["']|["']$/g, '').trim();
+
+        // Check if the sanitizedId is a valid ObjectId (24 hex characters)
+        if (!/^[0-9a-fA-F]{24}$/.test(sanitizedId)) {
+            return res.json({ success: false, message: "Invalid ObjectId format" });
+        }
+
+        console.log(sanitizedId);
+
+        // Fetch part by ObjectId
+        const part = await userModel.findById(sanitizedId);
+        
+        // Check if part is found
+        if (!part) {
+            return res.status(404).json({ message: 'Public key not found' });
+        }
+
+        // Return the public key (metaMaskAccount)
+        res.status(200).json({ publicKey: part.metaMaskAccount });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch data', error: err });
+    }
+};
 
 const addmetamask = async (req, res) => {
     try {
