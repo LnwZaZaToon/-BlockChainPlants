@@ -1,6 +1,7 @@
-<<<<<<< HEAD
+
 Blockchain Planting project using vite + express.js
 and solidity to write smart contract
+===================================================
 
 step to run
 
@@ -13,7 +14,7 @@ npm i install
 npm i axios
 in frontend , admin
 
-npm i dotenv 
+npm i install 
 in backend
 
 !!
