@@ -13,8 +13,11 @@ go to env and change private key in env using private key in some address in gar
 
 
 cd backend 
+
 npx hardhat compile
+
 cd scripts
+
 node deploy.js
 
 after deploy you get the contract address and use this contract address in contractController 
