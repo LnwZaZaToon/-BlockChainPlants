@@ -14,7 +14,7 @@ go to env and change private key in env using private key in some address in gar
 
 cd backend -->
 
-npx hardhat compile-->
+npx hardhat compile
 
 cd scripts-->
 
