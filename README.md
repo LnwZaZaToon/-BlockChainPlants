@@ -1,6 +1,7 @@
 
 
-Blockchain Planting project using vite + express.js and solidity to write contract  
+Blockchain Planting project using vite + express.js  
+and solidity to write smart contract  
 
 open garnache with 1337 as network id 
 
