@@ -12,11 +12,11 @@ and you may change the path of env file in contractController and deploy.js
 go to env and change private key in env using private key in some address in garnache
 
 
-cd backend 
+cd backend -->
 
-npx hardhat compile
+npx hardhat compile-->
 
-cd scripts
+cd scripts-->
 
 node deploy.js
 
