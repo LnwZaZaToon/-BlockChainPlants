@@ -34,7 +34,7 @@ so everything is set
 
 and open vs code and run these command
 
-<<<<<<< HEAD
+
 cd frontend 
 
 npm run dev
