@@ -11,7 +11,7 @@ const PartsItem = ({ image, name, price, amount, desc, id }) => {
     const { cartItems, addToCart, removeFromCart, url ,fetchPartsList} = useContext(StoreContext);
 
     useEffect(() => {
-        // Update itemCount when cartItems change
+        // Update itemCount 
         if (cartItems[id]) {
             setItemCount(cartItems[id]);
         } else {
@@ -26,11 +26,11 @@ const PartsItem = ({ image, name, price, amount, desc, id }) => {
             console.log(itemId);
     
             try {
-                // Making the API call to subtract an item
+                // เรียก api เพื่อลดจำนวน quest เพื่อที่จะทำให้หายไป
                 const api = await axios.post(`http://localhost:4000/api/parts/minus?id=${itemId}`);
                 console.log(api);
     
-                // Fetch the updated parts list after the item is added to the cart
+                // fetch ใหม่อีกครั้งเพื่ออัพเดทหน้าต่าง
                 fetchPartsList();
     
                 toast.success("An item has been added to the cart.");
@@ -45,7 +45,7 @@ const PartsItem = ({ image, name, price, amount, desc, id }) => {
 
     const handleRemoveFromCart = (itemId) => {
         removeFromCart(itemId);
-        setItemCount(itemCount - 1); // Decrement itemCount when an item is removed from the cart
+        setItemCount(itemCount - 1); // ลบของที่ถูกเลือกไปทีละ 1
     };
 
 

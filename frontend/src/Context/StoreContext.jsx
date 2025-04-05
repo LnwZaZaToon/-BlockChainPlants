@@ -6,6 +6,8 @@ import axios from "axios";
 
 export const StoreContext = createContext(null);
 
+// context สามารถส่งได้เลยโดยไม่ต้องคอยส่งเข้า props
+
 const StoreContextProvider = (props) => {
 
     const url = "http://localhost:4000"
@@ -61,8 +63,8 @@ const StoreContextProvider = (props) => {
         if (window.ethereum) {
             try {
                 const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                setMetaMaskAccount(accounts[0]);  // Set the MetaMask account in context
-                saveMetaMaskAccount(accounts[0]); // Optionally, store it in the database
+                setMetaMaskAccount(accounts[0]);  
+                saveMetaMaskAccount(accounts[0]); 
             } catch (error) {
                 console.error("Error connecting to MetaMask:", error);
             }
@@ -71,7 +73,7 @@ const StoreContextProvider = (props) => {
         }
     };
 
-    // Optionally save the MetaMask account to the database
+    // ทำการ save metamaskaccount ซึ่งคือเก็บ public key ลงไปใน DB
     const saveMetaMaskAccount = async (account) => {
         if (!token) {
             console.error("No token found in localStorage");
@@ -87,7 +89,7 @@ const StoreContextProvider = (props) => {
    
             if (response.data.message === "MetaMask account saved") {
                 console.log("MetaMask account saved:", response.data.user);
-                // Save the MetaMask account to localStorage
+                // SAVE ลง localstorage
                 localStorage.setItem("metaMaskAccount", account);
             }
         } catch (error) {

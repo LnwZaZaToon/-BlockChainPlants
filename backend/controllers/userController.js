@@ -116,9 +116,9 @@ const addmetamask = async (req, res) => {
             return res.status(400).json({ message: "User ID is missing from the token" });
         }
         const user2 = await userModel.findById(userId);
-        // Now update the user by their ObjectId
+   
         const user = await userModel.findByIdAndUpdate(
-            userId,  // userId is now a string from JWT payload
+            userId,  
             { metaMaskAccount },
             { new: true }
         );

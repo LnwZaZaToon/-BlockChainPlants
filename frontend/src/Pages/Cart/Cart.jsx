@@ -13,11 +13,11 @@ const Cart = () => {
     removeFromCart(itemId);
 
     try {
-        // Making the API call to add back an item
+        // เมื่อมีการลบข้อมูลใน bags หรือเรียกว่า cart เมื่อลบแล้วก็จะทำการเพิ่มจำนวนเข้าไปเหมือนเดิมซึ่งก็จะแสดงในหน้า quest ใหม่อีกครั้ง
         const api = await axios.post(`http://localhost:4000/api/parts/plus?id=${itemId}`);
         console.log(api);
 
-        // Fetch the updated parts list after the item is removed
+        // fetch อีกครั้ง
         fetchPartsList();
 
         toast.success("Item has been removed from the cart.");
@@ -50,7 +50,7 @@ const placeOrder = async () => {
   }).filter(Boolean);
 
   let orderData = {
-    userId: token, // Assuming token contains user ID
+    userId: token, // ใส่ token id ไปตอน post api
     items: orderItems,
     amount: 1,
   };
@@ -59,7 +59,7 @@ const placeOrder = async () => {
     let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
 
     if (response.data.success) {
-      // Remove items from the database
+      // ลบ quest ออกไปจาก data base
       for (const item of orderItems) {
         try {
          

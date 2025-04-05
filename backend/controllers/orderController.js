@@ -5,24 +5,24 @@ import Stripe from "stripe";
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-// Placing User Order for Frontend
+
 const placeOrder = async (req, res) => {
     try {
         const { userId, items, amount } = req.body;
 
-        // Check if the user already has an active quest (order)
+        
         const existingOrder = await orderModel.findOne({ userId, status: "Pending" });
 
         if (existingOrder) {
             return res.json({ success: false, message: "You already have an active quest. Complete it before starting a new one." });
         }
 
-        // If no active quest, create a new one
+        
         const newOrder = new orderModel({
             userId,
             items,
             amount,
-            status: "Pending" // Mark as pending until verified
+            status: "Pending" 
         });
 
         await newOrder.save();
@@ -33,7 +33,7 @@ const placeOrder = async (req, res) => {
     }
 };
 
-// Listing Order for Admin panel
+
 const listOrders = async (req, res) => {
     try {
         const orders = await orderModel.find({});
@@ -44,7 +44,7 @@ const listOrders = async (req, res) => {
     }
 }
 
-// User Orders for Frontend
+
 const userOrders = async (req, res) => {
     try {
         const orders = await orderModel.find({ userId: req.body.userId });
