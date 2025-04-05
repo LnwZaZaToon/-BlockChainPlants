@@ -1,3 +1,18 @@
-<<<<<<< HEAD
-# -BlockChainPlants
-Project to assign work for tree planting using blockchain.
+
+
+Blockchain Planting project
+
+open garnache with 1337 as network id 
+
+and open vs code and run these command
+
+cd frontend
+npm run dev
+
+
+cd backend
+node server
+
+
+cd admin
+npm run dev
